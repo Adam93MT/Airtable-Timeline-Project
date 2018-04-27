@@ -6,6 +6,7 @@
     "material-ui": "^1.0.0-beta.43",
     "rc-slider": "^8.6.1",
     "react": "16.2.0",
+    "react-contenteditable": "^2.0.7",
     "react-dom": "16.2.0",
     "react-scripts": "1.1.0"
   },
