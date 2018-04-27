@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
+import React from 'react';
 
-const Colors = ["#ffdaf6","#ffdce5", "#fee2d5", "#ffeab6", "#d1f7c4", "#d0f0fd", "#cfdfff", "#ede2fe", "#f0f0f0"]
+const Colors = ["yellow","orange","red","pink","purple","blue","cyan","teal","green","grey"]
 const MillisecsPerDay = 1000 * 60 * 60 * 24;
 
 function dateDiff(d1,d2){
@@ -21,30 +21,28 @@ function dynamicSort(property) {
 
 export class TimelineContainer extends React.Component {
 	render() {
+
+		// Deal with the items and their order
 		var Items = JSON.parse(JSON.stringify(this.props.itemsArray))
 		var ReverseItems = JSON.parse(JSON.stringify(this.props.itemsArray))
 		Items.sort(dynamicSort("start"))
 		ReverseItems.sort(dynamicSort("-end"))
 		const firstDate = Items[0].start
 		const lastDate = ReverseItems[0].end
-		console.log(firstDate, lastDate)
 
-		const numItems = Items.length
+		// Deal with the Zoom level
 		var zoom = this.props.zoom
 		var colWidth = zoom * 30
 
 		// Calculate timeline header labels
 		const charsPerLabel = 6 // ex. "Dec 31".length
-		var numCols = dateDiff(Date.parse(firstDate), Date.parse(lastDate))
-		var colsPerLabel = 2 * Math.ceil(4/zoom)
-		console.log("zoom", zoom)
+		// var numCols = dateDiff(Date.parse(firstDate), Date.parse(lastDate))
+		var colsPerLabel = 1 * Math.ceil(4/zoom)
 		var DateLabelsArray = []
 		for (var d = Date.parse(firstDate) + MillisecsPerDay; d < Date.parse(lastDate); d += colsPerLabel * MillisecsPerDay ) {
 			let dt = new Date(d)
 			DateLabelsArray.push(dt.toString().substr(4,charsPerLabel))
 		}
-		console.log(DateLabelsArray)
-
 
 		// Dynamically set the column width based on the zoom level
 		let containerStyle = {
@@ -56,11 +54,11 @@ export class TimelineContainer extends React.Component {
 			<div className="timeline-container" style={containerStyle}>
 				{
 					DateLabelsArray.map(
-						(date, idx) => <TimelineLabel date={date} index={idx} columns={colsPerLabel}></TimelineLabel>
+						(date, idx) => <TimelineLabel date={date} key={idx} index={idx} columns={colsPerLabel}></TimelineLabel>
 					)
 				}{
 					Items.map(
-						(item, idx) =>  <TimelineEvent item={item} index={idx} firstDate={firstDate} colWidth={colWidth}></TimelineEvent>
+						(item, idx) =>  <TimelineEvent item={item} key={idx} index={idx} firstDate={firstDate} colWidth={colWidth}></TimelineEvent>
 					)
 				}
 			</div>
@@ -83,19 +81,18 @@ class TimelineEvent extends React.Component {
 		let textLengthInColumns = Math.ceil(text.length * (fontSize/2) / colWidth) // Approx. how long is the text?
 		console.log(this.props.index, text, eventSpanInDays, textLengthInColumns)
 
-		let BGColor = Colors[this.props.index % Colors.length]
+		var thisColor = Colors[this.props.index % Colors.length]
 
 		// Regular
 		if (textLengthInColumns <= eventSpanInDays) {
 			let itemStyle = {
 				fontSize: fontSize,
 				gridColumnStart: startDayNumber,
-				gridColumnEnd: startDayNumber + eventSpanInDays,
-				backgroundColor: BGColor
+				gridColumnEnd: startDayNumber + eventSpanInDays
 			}
 
 			return(
-				<RegularTimelineElement text={text} style={itemStyle}></RegularTimelineElement>
+				<RegularTimelineElement color={thisColor} text={text} style={itemStyle}></RegularTimelineElement>
 			)
 		}
 		// Long Text
@@ -111,15 +108,14 @@ class TimelineEvent extends React.Component {
 			let pillStyle = {
 				gridColumnStart: 1,
 				gridColumnEnd: eventSpanInDays + 1,
-				backgroundColor: BGColor
 			}
 
 			let textStyle = {
 				gridColumnStart: eventSpanInDays + 1,
-				gridColumnEnd: eventSpanInDays + textLengthInColumns + 1,
+				gridColumnEnd: eventSpanInDays + textLengthInColumns + 2,
 			}
 			return (
-				<LongTextTimelineElement text={text} styles={[itemStyle, pillStyle, textStyle]}></LongTextTimelineElement>
+				<LongTextTimelineElement color={thisColor} text={text} styles={[itemStyle, pillStyle, textStyle]}></LongTextTimelineElement>
 			)
 		}
 
@@ -128,21 +124,21 @@ class TimelineEvent extends React.Component {
 }
 
 function TimelineLabel(props) {
-	// const LabelBGColors = ["#ffffff", "#eeeeee"]
 	let LabelStyle = {
 		gridColumnStart: props.index * props.columns + 1,
 		gridColumnEnd: props.index * props.columns + props.columns + 1,
-		// backgroundColor: LabelBGColors[props.index%2]
 	}
+
 	return(
 		<div className="timeline-label" style={LabelStyle}>{props.date}</div>
 	)
 }
 
 function RegularTimelineElement(props) {
+console.log("class:", props.color)
 return(
-	<div className="timeline-event timeline-event-regular" style={props.style}>
-		<span className="timeline-event-name">{String(props.text)}</span>
+	<div className={`${props.color} lightest timeline-event timeline-event-regular`} style={props.style}>
+		<span className={`${props.color} text-dark timeline-event-name`}>{String(props.text)}</span>
 	</div>
 )}
 
@@ -150,8 +146,8 @@ function LongTextTimelineElement(props) {
 
 	return(
 	<div className="timeline-event timeline-event-long-text" style={props.styles[0]}>
-		<div className="timeline-event-pill" style={props.styles[1]}></div>
-		<span className="timeline-event-name" style={props.styles[2]}>{String(props.text)}</span>
+		<div className={`${props.color} lightest timeline-event-pill`} style={props.styles[1]}></div>
+		<span className={`${props.color} text-normal timeline-event-name`} style={props.styles[2]}>{String(props.text)}</span>
 	</div>
 
 )}

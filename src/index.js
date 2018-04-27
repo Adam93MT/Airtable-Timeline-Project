@@ -1,6 +1,5 @@
 import React from 'react';
 import { render } from 'react-dom';
-import Button from 'material-ui/Button';
 import AppBar from 'material-ui/AppBar'
 import Toolbar from 'material-ui/Toolbar';
 import Typography from 'material-ui/Typography';
@@ -35,9 +34,14 @@ class Timeline extends React.Component {
 						defaultValue={this.state.zoom} 
 						min={1} max={5} 
 						onChange={this.handleZoomChange}
-						// railStyle={{backgroundColor: "#cfdfff"}}
-						handleStyle={[{backgroundColor: "#2d7ff9", borderColor: "#2d7ff9"}, {backgroundColor: "#2d7ff9", boxShadow: "none"}]}
-						trackStyle={[{backgroundColor: "#cfdfff"}, {backgroundColor: "#eeeeee"}]}
+						handleStyle={
+							[{backgroundColor: "#2879F4", borderColor: "#2879F4"}, 
+							{backgroundColor: "#2879F4", boxShadow: "#FFE2D4"}]
+						}
+						trackStyle={
+							[{backgroundColor: "#99C4FE"}, 
+							{backgroundColor: "#CFDDFF"}]
+						}
 					/>
 				</div>
 			</div>
@@ -47,7 +51,7 @@ class Timeline extends React.Component {
 
 const App = () => (
 <div>
-	<AppBar position="static" color="secondary">
+	<AppBar position="static" color="primary" style={{backgroundColor: "#2879F4"}}>
         <Toolbar>
           <Typography variant="title" color="inherit">
             Airtable Timeline
