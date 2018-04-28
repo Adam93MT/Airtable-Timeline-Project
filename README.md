@@ -1,4 +1,10 @@
-# What you like about your implementation.
+# Timeline
+
+A simple React app that reads events from a file and populates a timeline based on the start & end dates in the object.
+Zoom in and out to see the start and end dates more accurately, or to see more events at once.
+Edit the name of the events inline (doesn't save these names yet)
+
+## What you like about your implementation.
 
 I really like the simplicity of the layout, and how only a few parameters need to be set in React to properly layout an event. If new events are added to the list, the grid will automatically place the new event in an appropriate spot.
 
@@ -6,7 +12,7 @@ I've made each event as "stateless" as possible, with the mutable data a state v
 
 I think that the use of colour is quite effective here, especially how it ties the "long text" events together visually
 
-# What you would change if you were going to do it again.
+## What you would change if you were going to do it again.
 
 Adding simple grid lines would be helpful aesthetically, however this is hard to pull off using the `CSS` grid layout without adding a new element to the DOM in every cell.
 Additionally, highlighting _today_ might be a useful feature
@@ -15,11 +21,11 @@ The slider element I used (`rc-slider`) only works with integers. I would like t
 
 While I've implemented inline text editing, I haven't connected this to a backend that saves the data back to a file. Every time the page reloads, the data will refresh.
 
-# How you made your design decisions. For example, if you looked at other timelines for inspiration, please note that.
+## How you made your design decisions. For example, if you looked at other timelines for inspiration, please note that.
 
 Design decisions in terms of design language were primarily based off of existing Airtable designs, while the layout took hints from Asana's  timeline feature, and Instagantt, a gantt chart app that uses Asana's API
 
-# How you would test this if you had more time.
+## How you would test this if you had more time.
 
 Events should be unit tested using data that have extreme values (very long/short/empty text, very long time span), and the timeline as a whole should be tested using a large number of events. 
 
