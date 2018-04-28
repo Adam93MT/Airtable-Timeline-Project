@@ -165,7 +165,7 @@ const App = () => (
 	<AppBar position="static" color="primary" style={{backgroundColor: "#2879F4"}}>
         <Toolbar>
           <Typography variant="title" color="inherit">
-            Airtable Timeline
+            Timeline
           </Typography>
         </Toolbar>
       </AppBar>
