@@ -22,6 +22,14 @@ function dynamicSort(property) {
     }
 }
 
+function getFirstAndLastDates(itemsArray){
+	// Get the date of the first and last events
+	var reverseItems = JSON.parse(JSON.stringify(itemsArray))
+	itemsArray.sort(dynamicSort("start"))
+	reverseItems.sort(dynamicSort("-end"))
+	return [itemsArray[0].start, reverseItems[0].end]
+}
+
 class Timeline extends React.Component {
 
 	constructor(props) {
@@ -29,7 +37,7 @@ class Timeline extends React.Component {
 	    this.handleZoomChange = this.handleZoomChange.bind(this);
 	    this.updateItem = this.updateItem.bind(this);
 	    this.state = {
-	    	zoom: 2,
+	    	zoom: 3,
 	    	items: timelineItems
 	    };
 	  }
@@ -39,41 +47,38 @@ class Timeline extends React.Component {
 	}
 
 	updateItem (value, idx, attr) {
-		console.log(value, idx, this.state.items)
-		let NewItems = JSON.parse(JSON.stringify(this.state.items))
-		NewItems[idx][attr] = value
-
+		// Dynamically update attribute `attr` of the event at index `idx` 
+		// Currently only used for `name`, but can be extended to `start` and `end`
+		let TMP_NewItem = JSON.parse(JSON.stringify(this.state.items[idx]))
+		TMP_NewItem[attr] = value
 		this.setState({
-			items: NewItems 
+			items: [
+				...this.state.items.slice(0,idx),
+				TMP_NewItem,
+				...this.state.items.slice(idx+1, this.state.items.length)
+			]
 		})
 
-		// THIS IS WHERE I'D MAKE AN AJAX CALL TO UPDATE THE ITEM
+		// THIS IS WHERE WE'D MAKE AN AJAX CALL/POST REQUEST TO UPDATE THE DATA FILE
 	}
 	render(){
-
-		// Get the date of the first and last events
-		var Items = JSON.parse(JSON.stringify(this.state.items))
-		var ReverseItems = JSON.parse(JSON.stringify(this.state.items))
-		Items.sort(dynamicSort("start"))
-		ReverseItems.sort(dynamicSort("-end"))
-		const lastDate = ReverseItems[0].end
-		const firstDate = Items[0].start
-
+		const ExtremeDates = getFirstAndLastDates(this.state.items)
+		
 		return(
 			<div className="timeline-app">
-			<TimelineContainer 
-				itemsArray={this.state.items} 
-				firstDate={firstDate} 
-				lastDate={lastDate} 
-				zoom={this.state.zoom}
-				updateItem={this.updateItem}
-			/>
+				<TimelineContainer 
+					itemsArray={this.state.items} 
+					firstDate={ExtremeDates[0]} 
+					lastDate={ExtremeDates[1]} 
+					zoom={this.state.zoom}
+					updateItem={this.updateItem}
+				/>
 				<div className="slider-container">
 					<label>Zoom</label>
 					<Slider 
 						className="zoom-slider" 
 						defaultValue={this.state.zoom} 
-						min={1} max={5} 
+						min={1} max={6} 
 						onChange={this.handleZoomChange}
 						handleStyle={
 							[{backgroundColor: "#2879F4", borderColor: "#2879F4"}, 

@@ -12,15 +12,15 @@ export class TimelineEvent extends React.Component {
 	constructor() {
 		super();
 		this.state = {
-			editing: false,
+			editingText: false,
 		}
-		this.toggleEditing = this.toggleEditing.bind(this);
+		this.toggleEditingText = this.toggleEditingText.bind(this);
 		this.handleKeyStroke = this.handleKeyStroke.bind(this);
 	}	
 
-	toggleEditing() {
+	toggleEditingText() {
 		this.setState({
-			editing: !this.state.editing
+			editingText: !this.state.editingText
 		})
 	}
 
@@ -28,11 +28,11 @@ export class TimelineEvent extends React.Component {
 		// enter/return
 		if (event.keyCode === 13) {
 			this.props.updateItem(event.target.value, this.props.index, "name")
-			this.toggleEditing()
+			this.toggleEditingText()
 		} 
 		// esc
 		else if (event.keyCode === 27) {
-			this.toggleEditing()
+			this.toggleEditingText()
 		}
 	}
 
@@ -45,13 +45,13 @@ export class TimelineEvent extends React.Component {
 		let colWidth = this.props.colWidth
 		let eventSpanInDays = dateDiff(startDate, endDate) + 1 // How many days does this event span?
 		let startDayNumber = dateDiff(firstDate, startDate) + 1 // On what day does the event start since the first event started?
-		let textLengthInColumns = Math.ceil(text.length * (fontSize/2) / colWidth) // Approx. how long is the text?
+		let textLengthInColumns = Math.ceil(text.length * (fontSize/1.33) / colWidth) // Approx. how long is the text?
 		var thisColor = Colors[this.props.index % Colors.length]
 
 		console.log(this.props.index, text, eventSpanInDays, textLengthInColumns)
 
 		// Regular
-		if (textLengthInColumns < eventSpanInDays) {
+		if (textLengthInColumns <= eventSpanInDays) {
 			let itemStyle = {
 				fontSize: fontSize,
 				gridColumnStart: startDayNumber,
@@ -101,7 +101,7 @@ export class TimelineEvent extends React.Component {
 class RegularTimelineElement extends TimelineEvent {
 	render() {
 		let innerContent = ""
-		if (this.state.editing) {
+		if (this.state.editingText) {
 			innerContent = (
 				<input 
 					autoFocus={true}
@@ -109,21 +109,21 @@ class RegularTimelineElement extends TimelineEvent {
 					className={`${this.props.color} text-dark timeline-event-name`} 
 					defaultValue={this.props.text}
 					onKeyDown={this.handleKeyStroke}
-					onBlur={this.toggleEditing}
+					onBlur={this.toggleEditingText}
 				/>
 			)
 		} else {
 			innerContent = (
 				<span 
 					className={`${this.props.color} text-dark timeline-event-name`} 
-					onClick={this.toggleEditing}>
+					onClick={this.toggleEditingText}>
 						{String(this.props.text)}
 				</span>
 			)
 		}
 
 		return(
-			<div className={`${this.props.color} lightest timeline-event timeline-event-regular`} style={this.props.style}>
+			<div className={`${this.props.color} lightest timeline-event timeline-event-regular`} id={`event-${this.props.index}`} style={this.props.style}>
 				{innerContent}
 			</div>
 		)
@@ -134,7 +134,7 @@ class LongTextTimelineElement extends RegularTimelineElement {
 	render(){
 
 		let innerContent = ""
-		if (this.state.editing) {
+		if (this.state.editingText) {
 			innerContent = (
 				<input 
 					autoFocus={true}
@@ -143,7 +143,7 @@ class LongTextTimelineElement extends RegularTimelineElement {
 					style={this.props.styles[2]} 
 					defaultValue={this.props.text}
 					onKeyDown={this.handleKeyStroke}
-					onBlur={this.toggleEditing}
+					onBlur={this.toggleEditingText}
 				/>
 			)
 		} else {
@@ -151,14 +151,14 @@ class LongTextTimelineElement extends RegularTimelineElement {
 				<span 
 					className={`${this.props.color} text-normal timeline-event-name`} 
 					style={this.props.styles[2]} 
-					onClick={this.toggleEditing}>
+					onClick={this.toggleEditingText}>
 						{String(this.props.text)}
 				</span>
 			)
 		}
 
 		return(
-			<div className="timeline-event timeline-event-long-text" style={this.props.styles[0]}>
+			<div className="timeline-event timeline-event-long-text" id={`event-${this.props.index}`} style={this.props.styles[0]}>
 				<div className={`${this.props.color} lightest timeline-event-pill`} style={this.props.styles[1]}></div>
 				{innerContent}
 			</div>

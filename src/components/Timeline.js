@@ -21,7 +21,7 @@ export class TimelineContainer extends React.Component {
 		const firstDate = this.props.firstDate
 		const lastDate = this.props.lastDate
 		var zoom = this.props.zoom
-		var colWidth = zoom * 30
+		var colWidth = zoom * 22
 		const charsPerLabel = 6 // ex. "Dec 31".length
 		var colsPerLabel = 1 * Math.ceil(4/zoom)
 		var DateLabelsArray = []
