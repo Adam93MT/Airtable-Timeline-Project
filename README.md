@@ -23,8 +23,6 @@ Design decisions in terms of design language were primarily based off of existin
 
 Events should be unit tested using data that have extreme values (very long/short/empty text, very long time span), and the timeline as a whole should be tested using a large number of events. 
 
-
 Since the data is loaded from a local file, there isn't a need for integration testing, however if instead we load and save data using GET/POST, this should be both unit tested using sample data, and integration tested with the server.
 
 Additionally, there is no input validation for event naming, so once validation/sanitation is implemented, this should be tested with some potentially harmful strings.
-

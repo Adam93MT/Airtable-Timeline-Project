@@ -15,6 +15,7 @@ export class TimelineEvent extends React.Component {
 			editingText: false,
 		}
 		this.toggleEditingText = this.toggleEditingText.bind(this);
+		this.handleFocusOut = this.handleFocusOut.bind(this);
 		this.handleKeyStroke = this.handleKeyStroke.bind(this);
 	}	
 
@@ -22,6 +23,11 @@ export class TimelineEvent extends React.Component {
 		this.setState({
 			editingText: !this.state.editingText
 		})
+	}
+
+	handleFocusOut(event){
+		this.props.updateItem(event.target.value, this.props.index, "name")
+		this.toggleEditingText()
 	}
 
 	handleKeyStroke(event){
@@ -109,7 +115,7 @@ class RegularTimelineElement extends TimelineEvent {
 					className={`${this.props.color} text-dark timeline-event-name`} 
 					defaultValue={this.props.text}
 					onKeyDown={this.handleKeyStroke}
-					onBlur={this.toggleEditingText}
+					onBlur={this.handleFocusOut}
 				/>
 			)
 		} else {
@@ -143,7 +149,7 @@ class LongTextTimelineElement extends RegularTimelineElement {
 					style={this.props.styles[2]} 
 					defaultValue={this.props.text}
 					onKeyDown={this.handleKeyStroke}
-					onBlur={this.toggleEditingText}
+					onBlur={this.handleFocusOut}
 				/>
 			)
 		} else {
