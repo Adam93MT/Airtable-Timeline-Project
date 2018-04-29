@@ -23,7 +23,7 @@ While I've implemented inline text editing, I haven't connected this to a backen
 
 ## How you made your design decisions. For example, if you looked at other timelines for inspiration, please note that.
 
-Design decisions in terms of design language were primarily based off of existing Airtable designs, while the layout took hints from Asana's  timeline feature, and Instagantt, a gantt chart app that uses Asana's API
+Design decisions in terms of design language were primarily based off of the Airtable design language, while the layout took hints from Asana's  timeline feature, and Instagantt, a gantt chart app that uses Asana's API
 
 ## How you would test this if you had more time.
 
