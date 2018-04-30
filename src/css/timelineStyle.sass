@@ -1,0 +1,78 @@
+@import 'airtableColors'
+
+body
+	margin: 0
+	background-color: $white
+
+#root 
+	font-family: -apple-system, "Roboto", "Arial", sans-serif
+	text-align: center
+	width: 100%
+	margin: 0
+
+	&*
+		text-align: center
+
+.timeline-app
+	position: relative
+
+.timeline-container
+	width: calc(100% - 16px)
+	margin: 16px 0
+	padding-left: 16px
+	display: grid
+	grid-template-rows: 20px
+	grid-auto-rows: 20px
+	grid-auto-flow: column
+	grid-gap: 8px
+	align-items: center
+	overflow-x: scroll
+
+	.timeline-label
+		grid-row-start: 1
+		grid-row-end: 2
+		justify-self: start
+		align-self: center
+		font-weight: 400
+
+	.timeline-event-regular
+		// background-color: $red-light
+		padding: 0 8px
+		border-radius: 1em
+		text-align: left
+		align-self: center
+		height: 100%
+		display: flex
+		align-items: center
+	
+	.timeline-event-long-text
+		display: grid
+		height: 100%
+		align-items: center
+
+		.timeline-event-pill
+			padding: 0 8px
+			border-radius: 1em
+			height: 100%
+		
+		.timeline-event-name
+			justify-self: start
+			margin: 0 8px
+			font-weight: 400
+
+	input
+		background-color: transparent
+		border: none
+		font-size: inherit
+		font-weight: 500
+		width: 100%
+		max-width: 100%
+
+.slider-container
+	width: 15%
+	max-width: 256px
+	padding: 16px 32px
+	text-align: left
+
+.no-data
+	padding: 12%

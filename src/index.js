@@ -11,7 +11,7 @@ import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css';
 
 import { TimelineContainer } from './components/Timeline.js'
-import './style/timelineStyle.css';
+import './css/timelineStyle.css';
 // import timelineItems from './timelineItems';
 const DataEndpoint = './timelineItems.json';
 
